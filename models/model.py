@@ -77,14 +77,14 @@ class Informer(nn.Module):
         # dec_out = self.end_conv2(dec_out.transpose(2,1)).transpose(1,2)
         if self.output_attention:
             # Add 2
-            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            dec_out_temp = dec_out[:,-int(self.pred_len):,:]
             [dec_B, dec_N, dec_C] = dec_out_temp.size()
             print(f'Eventual pre-Decoder Output: {dec_B}, {dec_N}, {dec_C}', flush=True)
             print(f'Eventual Shape of Decoder Output: {dec_out_temp.reshape(dec_B, -1, dec_C*8).size()}', flush=True)
             return dec_out_temp.reshape(dec_B, -1, dec_C*8), attns
         else:
             # Add 3
-            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            dec_out_temp = dec_out[:,-int(self.pred_len):,:]
             [dec_B, dec_N, dec_C] = dec_out_temp.size()
             print(f'Eventual pre-Decoder Output: {dec_B}, {dec_N}, {dec_C}', flush=True)
             print(f'Eventual Shape of Decoder Output: {dec_out_temp.reshape(dec_B, -1, dec_C*8).size()}', flush=True)
@@ -164,7 +164,7 @@ class InformerStack(nn.Module):
         # dec_out = self.end_conv2(dec_out.transpose(2,1)).transpose(1,2)
         if self.output_attention:
             # Add 4
-            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            dec_out_temp = dec_out[:,-int(self.pred_len):,:]
             
             [dec_B, dec_N, dec_C] = dec_out_temp.size()
             print(f'Eventual pre-Decoder Output: {dec_B}, {dec_N}, {dec_C}', flush=True)
@@ -172,7 +172,7 @@ class InformerStack(nn.Module):
             return dec_out_temp.reshape(dec_B, -1, dec_C*8), attns
         else:
             # Add 5
-            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            dec_out_temp = dec_out[:,-int(self.pred_len):,:]
             [dec_B, dec_N, dec_C] = dec_out_temp.size()
             print(f'Eventual pre-Decoder Output: {dec_B}, {dec_N}, {dec_C}', flush=True)
             print(f'Eventual Shape of Decoder Output: {dec_out_temp.reshape(dec_B, -1, dec_C*8).size()}', flush=True)
