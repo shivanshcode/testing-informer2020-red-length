@@ -76,9 +76,15 @@ class Informer(nn.Module):
         # dec_out = self.end_conv1(dec_out)
         # dec_out = self.end_conv2(dec_out.transpose(2,1)).transpose(1,2)
         if self.output_attention:
-            return dec_out[:,-self.pred_len:,:], attns
+            # Add 2
+            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            [dec_B, dec_N, dec_C] = dec_out_temp.size()
+            return dec_out_temp.reshape(dec_B, -1, dec_C*8), attns
         else:
-            return dec_out[:,-self.pred_len:,:] # [B, L, D]
+            # Add 3
+            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            [dec_B, dec_N, dec_C] = dec_out_temp.size()
+            return dec_out_temp.reshape(dec_B, -1, dec_C*8)
 
 
 class InformerStack(nn.Module):
@@ -153,6 +159,13 @@ class InformerStack(nn.Module):
         # dec_out = self.end_conv1(dec_out)
         # dec_out = self.end_conv2(dec_out.transpose(2,1)).transpose(1,2)
         if self.output_attention:
-            return dec_out[:,-self.pred_len:,:], attns
+            # Add 4
+            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            [dec_B, dec_N, dec_C] = dec_out_temp.size()
+            return dec_out_temp.reshape(dec_B, -1, dec_C*8), attns
         else:
-            return dec_out[:,-self.pred_len:,:] # [B, L, D]
+            # Add 5
+            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            [dec_B, dec_N, dec_C] = dec_out_temp.size()
+            return dec_out_temp.reshape(dec_B, -1, dec_C*8)
+
