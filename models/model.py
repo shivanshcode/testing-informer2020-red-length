@@ -62,7 +62,7 @@ class Informer(nn.Module):
         )
         # self.end_conv1 = nn.Conv1d(in_channels=label_len+out_len, out_channels=out_len, kernel_size=1, bias=True)
         # self.end_conv2 = nn.Conv1d(in_channels=d_model, out_channels=c_out, kernel_size=1, bias=True)
-        self.projection = nn.Linear(d_model, c_out*8, bias=True)
+        self.projection = nn.Linear(d_model, c_out*4, bias=True)
         
     def forward(self, x_enc, x_mark_enc, x_dec, x_mark_dec, 
                 enc_self_mask=None, dec_self_mask=None, dec_enc_mask=None):
@@ -77,18 +77,18 @@ class Informer(nn.Module):
         # dec_out = self.end_conv2(dec_out.transpose(2,1)).transpose(1,2)
         if self.output_attention:
             # Add 2
-            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            dec_out_temp = dec_out[:,-int(self.pred_len/4):,:]
             [dec_B, dec_N, dec_C] = dec_out_temp.size()
             #print(f'Eventual pre-Decoder Output: {dec_B}, {dec_N}, {dec_C}', flush=True)
             #print(f'Eventual Shape of Decoder Output: {dec_out_temp.reshape(dec_B, -1, int(dec_C/8)).size()}', flush=True)
-            return dec_out_temp.reshape(dec_B, -1, int(dec_C/8)), attns
+            return dec_out_temp.reshape(dec_B, -1, int(dec_C/4)), attns
         else:
             # Add 3
-            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            dec_out_temp = dec_out[:,-int(self.pred_len/4):,:]
             [dec_B, dec_N, dec_C] = dec_out_temp.size()
             #print(f'Eventual pre-Decoder Output: {dec_B}, {dec_N}, {dec_C}', flush=True)
             #print(f'Eventual Shape of Decoder Output: {dec_out_temp.reshape(dec_B, -1, int(dec_C/8)).size()}', flush=True)
-            return dec_out_temp.reshape(dec_B, -1, int(dec_C/8))
+            return dec_out_temp.reshape(dec_B, -1, int(dec_C/4))
 
 
 class InformerStack(nn.Module):
@@ -164,17 +164,17 @@ class InformerStack(nn.Module):
         # dec_out = self.end_conv2(dec_out.transpose(2,1)).transpose(1,2)
         if self.output_attention:
             # Add 4
-            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            dec_out_temp = dec_out[:,-int(self.pred_len/4):,:]
             
             [dec_B, dec_N, dec_C] = dec_out_temp.size()
             #print(f'Eventual pre-Decoder Output: {dec_B}, {dec_N}, {dec_C}', flush=True)
             #print(f'Eventual Shape of Decoder Output: {dec_out_temp.reshape(dec_B, -1, int(dec_C/8)).size()}', flush=True)
-            return dec_out_temp.reshape(dec_B, -1, int(dec_C/8)), attns
+            return dec_out_temp.reshape(dec_B, -1, int(dec_C/4)), attns
         else:
             # Add 5
-            dec_out_temp = dec_out[:,-int(self.pred_len/8):,:]
+            dec_out_temp = dec_out[:,-int(self.pred_len/4):,:]
             [dec_B, dec_N, dec_C] = dec_out_temp.size()
             #print(f'Eventual pre-Decoder Output: {dec_B}, {dec_N}, {dec_C}', flush=True)
             #print(f'Eventual Shape of Decoder Output: {dec_out_temp.reshape(dec_B, -1, int(dec_C/8)).size()}', flush=True)
-            return dec_out_temp.reshape(dec_B, -1, int(dec_C/8))
+            return dec_out_temp.reshape(dec_B, -1, int(dec_C/4))
 
